@@ -14,10 +14,11 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render title', async () => {
+  it('should render the staff login screen', async () => {
     const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, bail-house-admin-portal');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Staff sign in');
   });
 });
