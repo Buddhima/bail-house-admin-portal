@@ -8,7 +8,8 @@
 
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
 }
 
@@ -80,6 +81,18 @@ button {
   gap: 8px;
 }
 
+.sidebar button {
+  width: 100%;
+  color: #f8faf4;
+  padding: 12px 0;
+  text-align: left;
+  background: transparent;
+}
+
+.sidebar button.active {
+  color: #cfe4c1;
+}
+
 .sidebar a {
   color: #f8faf4;
   padding: 12px 0;
@@ -146,7 +159,8 @@ label {
 }
 
 input,
-select {
+select,
+textarea {
   width: 100%;
   min-height: 42px;
   box-sizing: border-box;
@@ -155,6 +169,10 @@ select {
   padding: 9px 11px;
   color: #19211c;
   background: #ffffff;
+}
+
+textarea {
+  resize: vertical;
 }
 
 .primary-action,
@@ -202,6 +220,12 @@ select {
   min-width: 86px;
   color: #354138;
   background: transparent;
+}
+
+.secondary-action:disabled {
+  color: #79847d;
+  cursor: not-allowed;
+  background: #edf1ea;
 }
 
 .filter-button.active {
@@ -305,6 +329,11 @@ select {
   text-transform: uppercase;
 }
 
+.status-chip.pending-external {
+  color: #614416;
+  background: #f5e6c8;
+}
+
 dl {
   display: grid;
   gap: 10px;
@@ -336,6 +365,16 @@ dd {
   align-items: end;
 }
 
+.detail-form {
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  align-items: start;
+}
+
+.wide-field,
+.detail-form button {
+  grid-column: 1 / -1;
+}
+
 .resident-table {
   overflow: hidden;
   border: 1px solid #d8dfd3;
@@ -344,12 +383,19 @@ dd {
 
 .resident-row {
   display: grid;
-  grid-template-columns: 1.35fr 0.6fr 1fr 0.8fr 0.9fr;
+  grid-template-columns: 1.35fr 0.5fr 1fr 0.75fr 0.7fr 0.8fr;
   gap: 14px;
   align-items: center;
   padding: 14px 16px;
   background: #ffffff;
   border-top: 1px solid #e5eadf;
+}
+
+.compact-action {
+  width: max-content;
+  min-height: 34px;
+  padding: 8px 12px;
+  white-space: nowrap;
 }
 
 .resident-row.header {
@@ -382,15 +428,18 @@ dd {
     grid-auto-flow: column;
   }
 
-  .resident-form {
+  .resident-form,
+  .detail-form {
     grid-template-columns: repeat(2, minmax(180px, 1fr));
   }
 
   .resident-row {
-    grid-template-columns: 1fr 0.5fr 0.9fr;
+    grid-template-columns: 1fr 0.5fr 0.9fr 0.8fr;
   }
 
   .resident-row span:nth-child(4),
+  .resident-row span:nth-child(5),
+  .resident-row.header span:nth-child(5),
   .resident-row.header span:nth-child(4) {
     display: none;
   }
@@ -404,7 +453,8 @@ dd {
 
   .login-panel,
   .metrics-grid,
-  .resident-form {
+  .resident-form,
+  .detail-form {
     grid-template-columns: 1fr;
   }
 
