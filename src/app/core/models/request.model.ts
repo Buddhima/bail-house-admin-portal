@@ -1,5 +1,5 @@
 export type RequestType = 'absence' | 'visitor';
-export type RequestStatus = 'pending' | 'approved' | 'rejected';
+export type RequestStatus = 'pending' | 'first-level-approved' | 'approved' | 'rejected';
 
 export interface ResidentRequest {
   id: string;

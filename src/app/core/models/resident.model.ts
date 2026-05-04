@@ -8,5 +8,9 @@ export interface Resident {
   checkInStatus: 'in-house' | 'signed-out';
   caseWorker: string;
   phone: string;
+  dateOfBirth: string;
+  emergencyContactName: string;
+  emergencyContactPhone: string;
+  notes: string;
   admissionDate: string;
 }
