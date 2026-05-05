@@ -4,10 +4,17 @@
       <p class="eyebrow">Resident details</p>
       <h2>{{ selectedResident()?.fullName }}</h2>
     </div>
-    <a class="secondary-action" routerLink="/residents">Back to list</a>
+    <div class="detail-actions">
+      @if (selectedResident(); as resident) {
+        <a class="secondary-action" [routerLink]="['/residents', resident.id, 'history']">
+          Sign history
+        </a>
+      }
+      <a class="secondary-action" routerLink="/residents">Back to list</a>
+    </div>
   </div>
 
-  @if (selectedResident()) {
+  @if (selectedResident(); as resident) {
     <form class="resident-form detail-form" (ngSubmit)="saveResident()">
       <label>
         Full name

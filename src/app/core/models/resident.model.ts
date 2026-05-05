@@ -1,4 +1,5 @@
 export type ResidentStatus = 'active' | 'inactive' | 'on-leave';
+export type ResidentSignActionType = 'signin' | 'signout';
 
 export interface Resident {
   id: string;
@@ -14,4 +15,14 @@ export interface Resident {
   emergencyContactPhone: string;
   notes: string;
   admissionDate: string;
+}
+
+export interface ResidentSignAction {
+  id: string;
+  residentId: string;
+  type: ResidentSignActionType;
+  recordedAt: string;
+  recordedBy: string;
+  destination: string;
+  notes: string;
 }

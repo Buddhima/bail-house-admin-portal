@@ -3,6 +3,7 @@ import { DashboardPage } from './pages/dashboard/dashboard.page';
 import { RequestsPage } from './pages/requests/requests.page';
 import { ResidentDetailPage } from './pages/residents/resident-detail/resident-detail.page';
 import { ResidentFormPage } from './pages/residents/resident-form/resident-form.page';
+import { ResidentHistoryPage } from './pages/residents/resident-history/resident-history.page';
 import { ResidentListPage } from './pages/residents/resident-list/resident-list.page';
 
 export const routes: Routes = [
@@ -10,6 +11,7 @@ export const routes: Routes = [
   { path: 'requests', component: RequestsPage },
   { path: 'residents', component: ResidentListPage },
   { path: 'residents/new', component: ResidentFormPage },
+  { path: 'residents/:residentId/history', component: ResidentHistoryPage },
   { path: 'residents/:residentId', component: ResidentDetailPage },
   { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
   { path: '**', redirectTo: 'dashboard' },
