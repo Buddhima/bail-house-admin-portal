@@ -1,0 +1,45 @@
+<section class="section-block">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">New resident</p>
+      <h2>Add resident details</h2>
+    </div>
+    <a class="secondary-action" routerLink="/residents">Back to list</a>
+  </div>
+
+  <form class="resident-form detail-form" (ngSubmit)="addResident()">
+    <label>
+      Full name
+      <input name="fullName" [(ngModel)]="newResident.fullName" />
+    </label>
+    <label>
+      Room
+      <input name="room" [(ngModel)]="newResident.room" />
+    </label>
+    <label>
+      Date of birth
+      <input name="dateOfBirth" type="date" [(ngModel)]="newResident.dateOfBirth" />
+    </label>
+    <label>
+      Phone
+      <input name="phone" [(ngModel)]="newResident.phone" />
+    </label>
+    <label>
+      Case worker
+      <input name="caseWorker" [(ngModel)]="newResident.caseWorker" />
+    </label>
+    <label>
+      Emergency contact
+      <input name="emergencyContactName" [(ngModel)]="newResident.emergencyContactName" />
+    </label>
+    <label>
+      Emergency phone
+      <input name="emergencyContactPhone" [(ngModel)]="newResident.emergencyContactPhone" />
+    </label>
+    <label class="wide-field">
+      Notes
+      <textarea name="notes" rows="4" [(ngModel)]="newResident.notes"></textarea>
+    </label>
+    <button type="submit" class="primary-action">Save resident</button>
+  </form>
+</section>

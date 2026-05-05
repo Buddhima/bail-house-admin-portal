@@ -1,0 +1,18 @@
+<section class="metrics-grid" aria-label="Dashboard summary">
+  <article>
+    <span>{{ pendingRequests().length }}</span>
+    <p>First approval pending</p>
+  </article>
+  <article>
+    <span>{{ firstLevelApprovedRequests().length }}</span>
+    <p>Awaiting external approval</p>
+  </article>
+  <article>
+    <span>{{ activeResidents() }}</span>
+    <p>Active residents</p>
+  </article>
+  <article>
+    <span>{{ signedOutResidents() }}</span>
+    <p>Signed out</p>
+  </article>
+</section>

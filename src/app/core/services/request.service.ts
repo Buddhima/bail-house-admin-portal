@@ -42,7 +42,9 @@ export class RequestService {
   ]);
 
   readonly requests = this.requestsState.asReadonly();
-  readonly pendingRequests = computed(() => this.requestsState().filter((request) => request.status === 'pending'));
+  readonly pendingRequests = computed(() =>
+    this.requestsState().filter((request) => request.status === 'pending'),
+  );
   readonly firstLevelApprovedRequests = computed(() =>
     this.requestsState().filter((request) => request.status === 'first-level-approved'),
   );

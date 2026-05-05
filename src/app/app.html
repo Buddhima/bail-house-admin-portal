@@ -4,7 +4,10 @@
       <div>
         <p class="eyebrow">Bail House Staff Portal</p>
         <h1 id="login-title">Staff sign in</h1>
-        <p class="supporting">Manage resident records, absence requests, and visitor approvals from one browser workspace.</p>
+        <p class="supporting">
+          Manage resident records, absence requests, and visitor approvals from one browser
+          workspace.
+        </p>
       </div>
 
       <form class="login-form" (ngSubmit)="login()">
@@ -15,7 +18,12 @@
 
         <label>
           Password
-          <input name="password" type="password" autocomplete="current-password" [(ngModel)]="loginForm.password" />
+          <input
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            [(ngModel)]="loginForm.password"
+          />
         </label>
 
         @if (loginError()) {
@@ -34,9 +42,9 @@
         <h1>Admin Portal</h1>
       </div>
       <nav>
-        <button type="button" [class.active]="currentPage() === 'dashboard'" (click)="goToPage('dashboard')">Dashboard</button>
-        <button type="button" [class.active]="currentPage() === 'requests'" (click)="goToPage('requests')">Requests</button>
-        <button type="button" [class.active]="currentPage() === 'residents'" (click)="goToPage('residents')">Residents</button>
+        <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+        <a routerLink="/requests" routerLinkActive="active">Requests</a>
+        <a routerLink="/residents" routerLinkActive="active">Residents</a>
       </nav>
     </aside>
 
@@ -50,334 +58,7 @@
         <button type="button" class="secondary-action" (click)="logout()">Sign out</button>
       </header>
 
-      @if (currentPage() === 'dashboard') {
-        <section class="metrics-grid" aria-label="Dashboard summary">
-          <article>
-            <span>{{ pendingRequests().length }}</span>
-            <p>First approval pending</p>
-          </article>
-          <article>
-            <span>{{ firstLevelApprovedRequests().length }}</span>
-            <p>Awaiting external approval</p>
-          </article>
-          <article>
-            <span>{{ activeResidents() }}</span>
-            <p>Active residents</p>
-          </article>
-          <article>
-            <span>{{ signedOutResidents() }}</span>
-            <p>Signed out</p>
-          </article>
-        </section>
-      }
-
-      @if (currentPage() === 'requests') {
-        <section class="section-block">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">First approval</p>
-              <h2>Pending absence and visitor requests</h2>
-            </div>
-            <div class="filter-bar" aria-label="Request filters">
-              <button type="button" class="filter-button" [class.active]="requestFilter() === 'all'" (click)="setRequestFilter('all')">
-                All
-              </button>
-              <button
-                type="button"
-                class="filter-button"
-                [class.active]="requestFilter() === 'absence'"
-                (click)="setRequestFilter('absence')"
-              >
-                Absence
-              </button>
-              <button
-                type="button"
-                class="filter-button"
-                [class.active]="requestFilter() === 'visitor'"
-                (click)="setRequestFilter('visitor')"
-              >
-                Visitor
-              </button>
-            </div>
-          </div>
-
-          @if (showAbsenceRequests()) {
-            <section class="request-group" aria-labelledby="absence-requests-title">
-              <div class="group-heading">
-                <h3 id="absence-requests-title">Absence requests</h3>
-                <span>{{ absencePendingRequests().length }}</span>
-              </div>
-              <div class="request-list">
-                @for (request of absencePendingRequests(); track request.id) {
-                  <article class="request-card">
-                    <div class="request-main">
-                      <div>
-                        <span class="status-chip">{{ request.type }}</span>
-                        <h3>{{ request.residentName }}</h3>
-                        <p>{{ request.reason }}</p>
-                      </div>
-                      <dl>
-                        <div>
-                          <dt>Submitted</dt>
-                          <dd>{{ request.submittedAt | date:'MMM d, h:mm a' }}</dd>
-                        </div>
-                        <div>
-                          <dt>Window</dt>
-                          <dd>{{ request.startDate | date:'MMM d, h:mm a' }} to {{ request.endDate | date:'h:mm a' }}</dd>
-                        </div>
-                      </dl>
-                    </div>
-                    @if (request.notes) {
-                      <p class="note">{{ request.notes }}</p>
-                    }
-                    <div class="card-actions">
-                      <button type="button" class="primary-action" (click)="approveRequest(request.id)">Approve first level</button>
-                      <button type="button" class="danger-action" (click)="rejectRequest(request.id)">Reject</button>
-                    </div>
-                  </article>
-                } @empty {
-                  <p class="empty-state">No pending absence requests.</p>
-                }
-              </div>
-            </section>
-          }
-
-          @if (showVisitorRequests()) {
-            <section class="request-group" aria-labelledby="visitor-requests-title">
-              <div class="group-heading">
-                <h3 id="visitor-requests-title">Visitor requests</h3>
-                <span>{{ visitorPendingRequests().length }}</span>
-              </div>
-              <div class="request-list">
-                @for (request of visitorPendingRequests(); track request.id) {
-                  <article class="request-card">
-                    <div class="request-main">
-                      <div>
-                        <span class="status-chip">{{ request.type }}</span>
-                        <h3>{{ request.residentName }}</h3>
-                        <p>{{ request.reason }}</p>
-                      </div>
-                      <dl>
-                        <div>
-                          <dt>Submitted</dt>
-                          <dd>{{ request.submittedAt | date:'MMM d, h:mm a' }}</dd>
-                        </div>
-                        <div>
-                          <dt>Window</dt>
-                          <dd>{{ request.startDate | date:'MMM d, h:mm a' }} to {{ request.endDate | date:'h:mm a' }}</dd>
-                        </div>
-                      </dl>
-                    </div>
-                    @if (request.notes) {
-                      <p class="note">{{ request.notes }}</p>
-                    }
-                    <div class="card-actions">
-                      <button type="button" class="primary-action" (click)="approveRequest(request.id)">Approve first level</button>
-                      <button type="button" class="danger-action" (click)="rejectRequest(request.id)">Reject</button>
-                    </div>
-                  </article>
-                } @empty {
-                  <p class="empty-state">No pending visitor requests.</p>
-                }
-              </div>
-            </section>
-          }
-        </section>
-
-        <section class="section-block">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">External approval</p>
-              <h2>First-level approved requests</h2>
-            </div>
-            <button
-              type="button"
-              class="secondary-action"
-              [disabled]="!firstLevelApprovedRequests().length"
-              (click)="exportFirstLevelApprovedRequests()"
-            >
-              Export single file
-            </button>
-          </div>
-
-          <div class="request-list">
-            @for (request of firstLevelApprovedRequests(); track request.id) {
-              <article class="request-card">
-                <div class="request-main">
-                  <div>
-                    <span class="status-chip pending-external">External approval pending</span>
-                    <h3>{{ request.residentName }}</h3>
-                    <p>{{ request.reason }}</p>
-                  </div>
-                  <dl>
-                    <div>
-                      <dt>Type</dt>
-                      <dd>{{ request.type | titlecase }}</dd>
-                    </div>
-                    <div>
-                      <dt>Window</dt>
-                      <dd>{{ request.startDate | date:'MMM d, h:mm a' }} to {{ request.endDate | date:'h:mm a' }}</dd>
-                    </div>
-                  </dl>
-                </div>
-                <div class="card-actions">
-                  <button type="button" class="primary-action" (click)="markExternalApproval(request.id)">
-                    Mark external approval
-                  </button>
-                </div>
-              </article>
-            } @empty {
-              <p class="empty-state">No first-level approved requests ready for export.</p>
-            }
-          </div>
-        </section>
-      }
-
-      @if (currentPage() === 'residents') {
-        <section class="section-block">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">Resident records</p>
-              <h2>Resident list</h2>
-            </div>
-            <button type="button" class="primary-action" (click)="goToPage('new-resident')">Add resident</button>
-          </div>
-
-          <div class="resident-table" role="table" aria-label="Residents">
-            <div class="resident-row header" role="row">
-              <span role="columnheader">Resident</span>
-              <span role="columnheader">Room</span>
-              <span role="columnheader">Case worker</span>
-              <span role="columnheader">Check-in</span>
-              <span role="columnheader">Status</span>
-              <span role="columnheader">Details</span>
-            </div>
-            @for (resident of residents(); track resident.id) {
-              <div class="resident-row" role="row">
-                <span role="cell">
-                  <strong>{{ resident.fullName }}</strong>
-                  <small>{{ resident.phone }}</small>
-                </span>
-                <span role="cell">{{ resident.room }}</span>
-                <span role="cell">{{ resident.caseWorker }}</span>
-                <span role="cell">{{ resident.checkInStatus | titlecase }}</span>
-                <span role="cell">{{ resident.status | titlecase }}</span>
-                <span role="cell">
-                  <button type="button" class="secondary-action compact-action" (click)="openResident(resident)">View / edit</button>
-                </span>
-              </div>
-            }
-          </div>
-        </section>
-      }
-
-      @if (currentPage() === 'new-resident') {
-        <section class="section-block">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">New resident</p>
-              <h2>Add resident details</h2>
-            </div>
-            <button type="button" class="secondary-action" (click)="goToPage('residents')">Back to list</button>
-          </div>
-
-          <form class="resident-form detail-form" (ngSubmit)="addResident()">
-            <label>
-              Full name
-              <input name="fullName" [(ngModel)]="newResident.fullName" />
-            </label>
-            <label>
-              Room
-              <input name="room" [(ngModel)]="newResident.room" />
-            </label>
-            <label>
-              Date of birth
-              <input name="dateOfBirth" type="date" [(ngModel)]="newResident.dateOfBirth" />
-            </label>
-            <label>
-              Phone
-              <input name="phone" [(ngModel)]="newResident.phone" />
-            </label>
-            <label>
-              Case worker
-              <input name="caseWorker" [(ngModel)]="newResident.caseWorker" />
-            </label>
-            <label>
-              Emergency contact
-              <input name="emergencyContactName" [(ngModel)]="newResident.emergencyContactName" />
-            </label>
-            <label>
-              Emergency phone
-              <input name="emergencyContactPhone" [(ngModel)]="newResident.emergencyContactPhone" />
-            </label>
-            <label class="wide-field">
-              Notes
-              <textarea name="notes" rows="4" [(ngModel)]="newResident.notes"></textarea>
-            </label>
-            <button type="submit" class="primary-action">Save resident</button>
-          </form>
-        </section>
-      }
-
-      @if (currentPage() === 'resident-detail') {
-        <section class="section-block">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">Resident details</p>
-              <h2>{{ selectedResident()?.fullName }}</h2>
-            </div>
-            <button type="button" class="secondary-action" (click)="goToPage('residents')">Back to list</button>
-          </div>
-
-          @if (selectedResident()) {
-            <form class="resident-form detail-form" (ngSubmit)="saveResident()">
-              <label>
-                Full name
-                <input name="editFullName" [(ngModel)]="residentEditForm.fullName" />
-              </label>
-              <label>
-                Room
-                <input name="editRoom" [(ngModel)]="residentEditForm.room" />
-              </label>
-              <label>
-                Date of birth
-                <input name="editDateOfBirth" type="date" [(ngModel)]="residentEditForm.dateOfBirth" />
-              </label>
-              <label>
-                Phone
-                <input name="editPhone" [(ngModel)]="residentEditForm.phone" />
-              </label>
-              <label>
-                Case worker
-                <input name="editCaseWorker" [(ngModel)]="residentEditForm.caseWorker" />
-              </label>
-              <label>
-                Status
-                <select name="editStatus" [(ngModel)]="residentEditForm.status">
-                  <option value="active">Active</option>
-                  <option value="on-leave">On leave</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-              </label>
-              <label>
-                Emergency contact
-                <input name="editEmergencyContactName" [(ngModel)]="residentEditForm.emergencyContactName" />
-              </label>
-              <label>
-                Emergency phone
-                <input name="editEmergencyContactPhone" [(ngModel)]="residentEditForm.emergencyContactPhone" />
-              </label>
-              <label class="wide-field">
-                Notes
-                <textarea name="editNotes" rows="4" [(ngModel)]="residentEditForm.notes"></textarea>
-              </label>
-              <button type="submit" class="primary-action">Save changes</button>
-            </form>
-          } @else {
-            <p class="empty-state">Select a resident from the list to view details.</p>
-          }
-        </section>
-      }
+      <router-outlet />
     </section>
   </main>
 }
