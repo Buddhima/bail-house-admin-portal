@@ -13,6 +13,7 @@ Core workflows:
 
 Build direction:
 - Use Angular.
+- Run the project on port 4300 for local development.
 - Optimize for staff browser workflows on desktop and tablet.
 - Keep service/model boundaries clean so mock data can later be replaced by a backend API.
 - Avoid mobile-app-style screens unless needed for responsiveness.
