@@ -1,0 +1,181 @@
+<section class="section-block">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">First approval</p>
+      <h2>Pending absence and visitor requests</h2>
+    </div>
+    <div class="filter-bar" aria-label="Request filters">
+      <button
+        type="button"
+        class="filter-button"
+        [class.active]="requestFilter() === 'all'"
+        (click)="setRequestFilter('all')"
+      >
+        All
+      </button>
+      <button
+        type="button"
+        class="filter-button"
+        [class.active]="requestFilter() === 'absence'"
+        (click)="setRequestFilter('absence')"
+      >
+        Absence
+      </button>
+      <button
+        type="button"
+        class="filter-button"
+        [class.active]="requestFilter() === 'visitor'"
+        (click)="setRequestFilter('visitor')"
+      >
+        Visitor
+      </button>
+    </div>
+  </div>
+
+  @if (showAbsenceRequests()) {
+    <section class="request-group" aria-labelledby="absence-requests-title">
+      <div class="group-heading">
+        <h3 id="absence-requests-title">Absence requests</h3>
+        <span>{{ absencePendingRequests().length }}</span>
+      </div>
+      <div class="request-list">
+        @for (request of absencePendingRequests(); track request.id) {
+          <article class="request-card">
+            <div class="request-main">
+              <div>
+                <span class="status-chip">{{ request.type }}</span>
+                <h3>{{ request.residentName }}</h3>
+                <p>{{ request.reason }}</p>
+              </div>
+              <dl>
+                <div>
+                  <dt>Submitted</dt>
+                  <dd>{{ request.submittedAt | date: 'MMM d, h:mm a' }}</dd>
+                </div>
+                <div>
+                  <dt>Window</dt>
+                  <dd>
+                    {{ request.startDate | date: 'MMM d, h:mm a' }} to
+                    {{ request.endDate | date: 'h:mm a' }}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+            @if (request.notes) {
+              <p class="note">{{ request.notes }}</p>
+            }
+            <div class="card-actions">
+              <button type="button" class="primary-action" (click)="approveRequest(request.id)">
+                Approve first level
+              </button>
+              <button type="button" class="danger-action" (click)="rejectRequest(request.id)">
+                Reject
+              </button>
+            </div>
+          </article>
+        } @empty {
+          <p class="empty-state">No pending absence requests.</p>
+        }
+      </div>
+    </section>
+  }
+
+  @if (showVisitorRequests()) {
+    <section class="request-group" aria-labelledby="visitor-requests-title">
+      <div class="group-heading">
+        <h3 id="visitor-requests-title">Visitor requests</h3>
+        <span>{{ visitorPendingRequests().length }}</span>
+      </div>
+      <div class="request-list">
+        @for (request of visitorPendingRequests(); track request.id) {
+          <article class="request-card">
+            <div class="request-main">
+              <div>
+                <span class="status-chip">{{ request.type }}</span>
+                <h3>{{ request.residentName }}</h3>
+                <p>{{ request.reason }}</p>
+              </div>
+              <dl>
+                <div>
+                  <dt>Submitted</dt>
+                  <dd>{{ request.submittedAt | date: 'MMM d, h:mm a' }}</dd>
+                </div>
+                <div>
+                  <dt>Window</dt>
+                  <dd>
+                    {{ request.startDate | date: 'MMM d, h:mm a' }} to
+                    {{ request.endDate | date: 'h:mm a' }}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+            @if (request.notes) {
+              <p class="note">{{ request.notes }}</p>
+            }
+            <div class="card-actions">
+              <button type="button" class="primary-action" (click)="approveRequest(request.id)">
+                Approve first level
+              </button>
+              <button type="button" class="danger-action" (click)="rejectRequest(request.id)">
+                Reject
+              </button>
+            </div>
+          </article>
+        } @empty {
+          <p class="empty-state">No pending visitor requests.</p>
+        }
+      </div>
+    </section>
+  }
+</section>
+
+<section class="section-block">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">External approval</p>
+      <h2>First-level approved requests</h2>
+    </div>
+    <button
+      type="button"
+      class="secondary-action"
+      [disabled]="!firstLevelApprovedRequests().length"
+      (click)="exportFirstLevelApprovedRequests()"
+    >
+      Export single file
+    </button>
+  </div>
+
+  <div class="request-list">
+    @for (request of firstLevelApprovedRequests(); track request.id) {
+      <article class="request-card">
+        <div class="request-main">
+          <div>
+            <span class="status-chip pending-external">External approval pending</span>
+            <h3>{{ request.residentName }}</h3>
+            <p>{{ request.reason }}</p>
+          </div>
+          <dl>
+            <div>
+              <dt>Type</dt>
+              <dd>{{ request.type | titlecase }}</dd>
+            </div>
+            <div>
+              <dt>Window</dt>
+              <dd>
+                {{ request.startDate | date: 'MMM d, h:mm a' }} to
+                {{ request.endDate | date: 'h:mm a' }}
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <div class="card-actions">
+          <button type="button" class="primary-action" (click)="markExternalApproval(request.id)">
+            Mark external approval
+          </button>
+        </div>
+      </article>
+    } @empty {
+      <p class="empty-state">No first-level approved requests ready for export.</p>
+    }
+  </div>
+</section>

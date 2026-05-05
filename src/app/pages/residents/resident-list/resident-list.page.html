@@ -1,0 +1,37 @@
+<section class="section-block">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Resident records</p>
+      <h2>Resident list</h2>
+    </div>
+    <a class="primary-action" routerLink="/residents/new">Add resident</a>
+  </div>
+
+  <div class="resident-table" role="table" aria-label="Residents">
+    <div class="resident-row header" role="row">
+      <span role="columnheader">Resident</span>
+      <span role="columnheader">Room</span>
+      <span role="columnheader">Case worker</span>
+      <span role="columnheader">Check-in</span>
+      <span role="columnheader">Status</span>
+      <span role="columnheader">Details</span>
+    </div>
+    @for (resident of residents(); track resident.id) {
+      <div class="resident-row" role="row">
+        <span role="cell">
+          <strong>{{ resident.fullName }}</strong>
+          <small>{{ resident.phone }}</small>
+        </span>
+        <span role="cell">{{ resident.room }}</span>
+        <span role="cell">{{ resident.caseWorker }}</span>
+        <span role="cell">{{ resident.checkInStatus | titlecase }}</span>
+        <span role="cell">{{ resident.status | titlecase }}</span>
+        <span role="cell">
+          <a class="secondary-action compact-action" [routerLink]="['/residents', resident.id]"
+            >View / edit</a
+          >
+        </span>
+      </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,63 @@
+<section class="section-block">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Resident details</p>
+      <h2>{{ selectedResident()?.fullName }}</h2>
+    </div>
+    <a class="secondary-action" routerLink="/residents">Back to list</a>
+  </div>
+
+  @if (selectedResident()) {
+    <form class="resident-form detail-form" (ngSubmit)="saveResident()">
+      <label>
+        Full name
+        <input name="editFullName" [(ngModel)]="residentEditForm.fullName" />
+      </label>
+      <label>
+        Room
+        <input name="editRoom" [(ngModel)]="residentEditForm.room" />
+      </label>
+      <label>
+        Date of birth
+        <input name="editDateOfBirth" type="date" [(ngModel)]="residentEditForm.dateOfBirth" />
+      </label>
+      <label>
+        Phone
+        <input name="editPhone" [(ngModel)]="residentEditForm.phone" />
+      </label>
+      <label>
+        Case worker
+        <input name="editCaseWorker" [(ngModel)]="residentEditForm.caseWorker" />
+      </label>
+      <label>
+        Status
+        <select name="editStatus" [(ngModel)]="residentEditForm.status">
+          <option value="active">Active</option>
+          <option value="on-leave">On leave</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </label>
+      <label>
+        Emergency contact
+        <input
+          name="editEmergencyContactName"
+          [(ngModel)]="residentEditForm.emergencyContactName"
+        />
+      </label>
+      <label>
+        Emergency phone
+        <input
+          name="editEmergencyContactPhone"
+          [(ngModel)]="residentEditForm.emergencyContactPhone"
+        />
+      </label>
+      <label class="wide-field">
+        Notes
+        <textarea name="editNotes" rows="4" [(ngModel)]="residentEditForm.notes"></textarea>
+      </label>
+      <button type="submit" class="primary-action">Save changes</button>
+    </form>
+  } @else {
+    <p class="empty-state">Select a resident from the list to view details.</p>
+  }
+</section>
