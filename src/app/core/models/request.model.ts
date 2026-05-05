@@ -3,6 +3,7 @@ export type RequestStatus = 'pending' | 'first-level-approved' | 'approved' | 'r
 
 export interface ResidentRequest {
   id: string;
+  locationId: string;
   residentId: string;
   residentName: string;
   type: RequestType;

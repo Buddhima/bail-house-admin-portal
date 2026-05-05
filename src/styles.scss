@@ -74,6 +74,7 @@ a {
 }
 
 .sidebar h1,
+.sidebar h2,
 .topbar h2,
 .section-heading h2,
 .login-panel h1,
@@ -85,6 +86,42 @@ a {
 .sidebar h1 {
   font-size: 28px;
   line-height: 1.05;
+}
+
+.sidebar-main,
+.sidebar-location {
+  display: grid;
+  gap: 20px;
+}
+
+.sidebar-location {
+  gap: 12px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(248, 250, 244, 0.18);
+}
+
+.sidebar-location h2 {
+  font-size: 18px;
+}
+
+.sidebar-location p {
+  margin: 4px 0 0;
+  color: #c9d7c7;
+  font-size: 14px;
+}
+
+.sidebar-location .eyebrow {
+  color: #cfe4c1;
+}
+
+.sidebar-location label {
+  color: #f8faf4;
+}
+
+.sidebar-location select {
+  border-color: rgba(248, 250, 244, 0.3);
+  color: #f8faf4;
+  background: #294837;
 }
 
 .sidebar nav {
@@ -251,7 +288,7 @@ textarea {
 
 .metrics-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
 }
 
@@ -438,6 +475,20 @@ dd {
     height: auto;
     flex-direction: row;
     align-items: center;
+    gap: 24px;
+  }
+
+  .sidebar-main {
+    grid-template-columns: auto minmax(220px, 280px);
+    align-items: center;
+    gap: 24px;
+  }
+
+  .sidebar-location {
+    padding-top: 0;
+    padding-left: 24px;
+    border-top: 0;
+    border-left: 1px solid rgba(248, 250, 244, 0.18);
   }
 
   .sidebar nav {
@@ -478,9 +529,22 @@ dd {
   .section-heading,
   .request-main,
   .card-actions,
-  .sidebar {
+  .sidebar,
+  .sidebar-main {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .sidebar-main {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar-location {
+    padding-top: 18px;
+    padding-left: 0;
+    border-top: 1px solid rgba(248, 250, 244, 0.18);
+    border-left: 0;
   }
 
   .filter-bar {

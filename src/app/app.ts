@@ -3,6 +3,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from './core/services/auth.service';
+import { LocationService } from './core/services/location.service';
 
 @Component({
   selector: 'app-root',
@@ -11,9 +12,13 @@ import { AuthService } from './core/services/auth.service';
 })
 export class App {
   private readonly authService = inject(AuthService);
+  private readonly locationService = inject(LocationService);
   private readonly router = inject(Router);
 
   readonly session = this.authService.session;
+  readonly locations = this.locationService.locations;
+  readonly selectedLocation = this.locationService.selectedLocation;
+  readonly selectedLocationId = this.locationService.selectedLocationId;
   readonly loginError = signal('');
 
   loginForm = {
@@ -34,5 +39,9 @@ export class App {
     this.authService.logout();
     this.loginError.set('');
     void this.router.navigate(['/dashboard']);
+  }
+
+  selectLocation(locationId: string): void {
+    this.locationService.selectLocation(locationId);
   }
 }

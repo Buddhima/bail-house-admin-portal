@@ -1,6 +1,7 @@
 import { CommonModule, DatePipe, TitleCasePipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { RequestType } from '../../core/models/request.model';
+import { LocationService } from '../../core/services/location.service';
 import { RequestService } from '../../core/services/request.service';
 
 type RequestFilter = 'all' | RequestType;
@@ -11,8 +12,10 @@ type RequestFilter = 'all' | RequestType;
   templateUrl: './requests.page.html',
 })
 export class RequestsPage {
+  private readonly locationService = inject(LocationService);
   private readonly requestService = inject(RequestService);
 
+  readonly selectedLocation = this.locationService.selectedLocation;
   readonly pendingRequests = this.requestService.pendingRequests;
   readonly firstLevelApprovedRequests = this.requestService.firstLevelApprovedRequests;
   readonly requestFilter = signal<RequestFilter>('all');
@@ -42,9 +45,14 @@ export class RequestsPage {
   }
 
   exportFirstLevelApprovedRequests(): void {
+    const locationSlug = this.selectedLocation()
+      .name.toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
     const rows = [
-      ['Request ID', 'Resident', 'Type', 'Submitted', 'Start', 'End', 'Reason', 'Notes'],
+      ['Location', 'Request ID', 'Resident', 'Type', 'Submitted', 'Start', 'End', 'Reason', 'Notes'],
       ...this.firstLevelApprovedRequests().map((request) => [
+        this.selectedLocation().name,
         request.id,
         request.residentName,
         request.type,
@@ -63,7 +71,7 @@ export class RequestsPage {
     const link = document.createElement('a');
 
     link.href = url;
-    link.download = `first-level-approved-requests-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.download = `${locationSlug}-first-level-approved-requests-${new Date().toISOString().slice(0, 10)}.csv`;
     link.click();
     URL.revokeObjectURL(url);
   }
