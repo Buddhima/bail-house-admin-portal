@@ -37,9 +37,29 @@
 } @else {
   <main class="portal-shell">
     <aside class="sidebar" aria-label="Primary">
-      <div>
-        <p class="eyebrow">Bail House</p>
-        <h1>Admin Portal</h1>
+      <div class="sidebar-main">
+        <div>
+          <p class="eyebrow">Bail House</p>
+          <h1>Admin Portal</h1>
+        </div>
+        <section class="sidebar-location" aria-labelledby="location-switcher-title">
+          <div>
+            <p class="eyebrow">Current location</p>
+            <h2 id="location-switcher-title">{{ selectedLocation().name }}</h2>
+            <p>{{ selectedLocation().address }}</p>
+          </div>
+          <label>
+            Location
+            <select
+              [value]="selectedLocationId()"
+              (change)="selectLocation($any($event.target).value)"
+            >
+              @for (location of locations(); track location.id) {
+                <option [value]="location.id">{{ location.name }}</option>
+              }
+            </select>
+          </label>
+        </section>
       </div>
       <nav>
         <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
@@ -53,7 +73,7 @@
         <div>
           <p class="eyebrow">Signed in</p>
           <h2>{{ session()?.name | titlecase }}</h2>
-          <p>{{ session()?.role }}</p>
+          <p>{{ session()?.role }} &middot; {{ selectedLocation().name }}</p>
         </div>
         <button type="button" class="secondary-action" (click)="logout()">Sign out</button>
       </header>

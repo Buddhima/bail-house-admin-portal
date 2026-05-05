@@ -1,5 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { Resident, ResidentStatus } from '../models/resident.model';
+import { LocationService } from './location.service';
 
 export type ResidentForm = Pick<
   Resident,
@@ -15,9 +16,11 @@ export type ResidentForm = Pick<
 
 @Injectable({ providedIn: 'root' })
 export class ResidentService {
+  private readonly locationService = inject(LocationService);
   private readonly residentsState = signal<Resident[]>([
     {
       id: 'res-001',
+      locationId: 'central-house',
       fullName: 'Ari Patel',
       room: 'A12',
       status: 'active',
@@ -32,6 +35,7 @@ export class ResidentService {
     },
     {
       id: 'res-002',
+      locationId: 'central-house',
       fullName: 'Sam Chen',
       room: 'B04',
       status: 'on-leave',
@@ -46,6 +50,7 @@ export class ResidentService {
     },
     {
       id: 'res-003',
+      locationId: 'central-house',
       fullName: 'Moana Williams',
       room: 'C07',
       status: 'active',
@@ -58,15 +63,50 @@ export class ResidentService {
       notes: 'Family visits are part of current support plan.',
       admissionDate: '2026-01-24',
     },
+    {
+      id: 'res-004',
+      locationId: 'harbour-house',
+      fullName: 'Tane Morgan',
+      room: 'H03',
+      status: 'active',
+      checkInStatus: 'in-house',
+      caseWorker: 'Owen Hart',
+      phone: '021 555 016',
+      dateOfBirth: '1990-02-18',
+      emergencyContactName: 'Mere Morgan',
+      emergencyContactPhone: '021 555 116',
+      notes: 'Works afternoon shifts three days a week.',
+      admissionDate: '2026-04-03',
+    },
+    {
+      id: 'res-005',
+      locationId: 'harbour-house',
+      fullName: 'Leah Thompson',
+      room: 'H09',
+      status: 'on-leave',
+      checkInStatus: 'signed-out',
+      caseWorker: 'Nina Brooks',
+      phone: '021 555 017',
+      dateOfBirth: '1985-09-06',
+      emergencyContactName: 'Mark Thompson',
+      emergencyContactPhone: '021 555 117',
+      notes: 'Weekly counselling transport coordinated by staff.',
+      admissionDate: '2026-03-21',
+    },
   ]);
 
-  readonly residents = this.residentsState.asReadonly();
+  readonly residents = computed(() =>
+    this.residentsState().filter(
+      (resident) => resident.locationId === this.locationService.selectedLocationId(),
+    ),
+  );
 
   addResident(resident: ResidentForm): void {
     this.residentsState.update((residents) => [
       ...residents,
       {
         id: `res-${crypto.randomUUID().slice(0, 8)}`,
+        locationId: this.locationService.selectedLocationId(),
         ...resident,
         status: 'active',
         checkInStatus: 'in-house',

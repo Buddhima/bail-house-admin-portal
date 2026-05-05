@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { LocationService } from '../../../core/services/location.service';
 import { ResidentForm, ResidentService } from '../../../core/services/resident.service';
 
 @Component({
@@ -9,9 +10,11 @@ import { ResidentForm, ResidentService } from '../../../core/services/resident.s
   templateUrl: './resident-form.page.html',
 })
 export class ResidentFormPage {
+  private readonly locationService = inject(LocationService);
   private readonly residentService = inject(ResidentService);
   private readonly router = inject(Router);
 
+  readonly selectedLocation = this.locationService.selectedLocation;
   newResident: ResidentForm = this.createEmptyResidentForm();
 
   addResident(): void {

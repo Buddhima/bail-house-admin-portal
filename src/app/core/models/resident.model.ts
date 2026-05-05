@@ -2,6 +2,7 @@ export type ResidentStatus = 'active' | 'inactive' | 'on-leave';
 
 export interface Resident {
   id: string;
+  locationId: string;
   fullName: string;
   room: string;
   status: ResidentStatus;
