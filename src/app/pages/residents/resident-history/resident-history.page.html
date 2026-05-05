@@ -1,0 +1,51 @@
+<section class="section-block">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Sign in / out history</p>
+      <h2>{{ selectedResident()?.fullName }}</h2>
+    </div>
+    <div class="detail-actions">
+      @if (selectedResident(); as resident) {
+        <a class="secondary-action" [routerLink]="['/residents', resident.id]">Resident details</a>
+      }
+      <a class="secondary-action" routerLink="/residents">Back to list</a>
+    </div>
+  </div>
+
+  @if (selectedResident(); as resident) {
+    <div class="history-summary" aria-label="Resident sign status">
+      <span class="status-chip">{{ resident.checkInStatus | titlecase }}</span>
+      <p>
+        Room {{ resident.room }} &middot; Case worker {{ resident.caseWorker }}
+      </p>
+    </div>
+
+    <div class="history-list" aria-label="Resident sign in and sign out actions">
+      @for (action of signActions(); track action.id) {
+        <article class="history-item">
+          <div>
+            <span class="status-chip" [class.pending-external]="action.type === 'signout'">
+              {{ action.type === 'signin' ? 'Signed in' : 'Signed out' }}
+            </span>
+            <h3>{{ action.destination }}</h3>
+            <p>{{ action.notes }}</p>
+          </div>
+          <dl>
+            <div>
+              <dt>Recorded</dt>
+              <dd>{{ action.recordedAt | date: 'medium' }}</dd>
+            </div>
+            <div>
+              <dt>Recorded by</dt>
+              <dd>{{ action.recordedBy }}</dd>
+            </div>
+          </dl>
+        </article>
+      } @empty {
+        <p class="empty-state">No sign in or sign out actions recorded for this resident.</p>
+      }
+    </div>
+  } @else {
+    <p class="empty-state">Select a resident from the list to view sign in and sign out history.</p>
+  }
+</section>
